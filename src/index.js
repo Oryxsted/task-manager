@@ -4,5 +4,5 @@ import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
- <p>Очистка проекта</p>
+ <p>Очистка проекта.</p>
 );
