@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Timer from './components/Timer';
 
  
-function App() {
+function App() {  
+  
+
+
   return (
     <div className="App">
       
+      <Timer/>
     </div>
   );
 }
