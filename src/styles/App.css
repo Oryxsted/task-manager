@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Century Gothic';
+}
+.sidebar {
+    padding: 30px;
+    background: #F6FFF7;
+}
+.top__bar {
+    background: #699A6E;
+}
