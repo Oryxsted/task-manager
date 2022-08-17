@@ -7,9 +7,16 @@ body {
     font-family: 'Century Gothic';
 }
 .sidebar {
-    padding: 30px;
+    padding: 55px;
     background: #F6FFF7;
 }
 .top__bar {
     background: #699A6E;
+}
+.timer__counter {
+    font-size:56px;
+}
+.skip__button span {
+    cursor: pointer;
+    border-bottom: 1px dotted;
 }

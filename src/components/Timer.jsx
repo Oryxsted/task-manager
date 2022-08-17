@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import * as workerTimers from 'worker-timers';
-import { Button, IconButton } from '@mui/material';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/PlayArrow';
+import  { sendNotification } from '../functions/notifications';
+import { IconButton } from '@mui/material';
+import PauseCircleFilledIcon from '@mui/icons-material/PauseCircleFilled';
+import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 
-
+/**
+ * 
+ * @returns Компонент таймера
+ */
 const Timer = () => {
-
-    let workInterval = 10 * 60;
-    let chillInterval = 5 * 60;
+    
+    let workInterval = 25 * 60; // Интервал работы
+    let chillInterval = 5 * 60; // Интервал отдыха
 
     const pomLen = 12; // Количество Помидорок (интервалов)
     const [currentPoms, setPoms] = useState(0); // Сколько помидорок отработано
@@ -16,17 +20,25 @@ const Timer = () => {
 
     let [isTimerOn, turnTimer] = useState(false); // Таймер вкл или выкл
     let [isWorkingTime, turnWork] = useState(true); // Рабочее время или перерыв
-    const [timeWorked, countWorkedTime] = useState(0);
-
-
+    const [timeWorked, countWorkedTime] = useState(0); //Общее отработанное время
+    const favicon = document.getElementById("favicon"); //Фавиконка - меняется при смене таймера    
     
     /**
-    Переключение таймера
+    * Переключение таймера
     */
     function toggleCounting() {
-        turnTimer(isTimerOn = !isTimerOn);   
+        turnTimer(isTimerOn = !isTimerOn);               
     }
 
+    /**
+    * Пропуск текущего интервала таймера
+    */
+    function skipTimer() {
+
+        setTime(0);            
+        turnTimer(true);
+    }
+  
 
     /**
     Преобразует секунды для отображения в часах, минутах, секундах
@@ -53,79 +65,110 @@ const Timer = () => {
         return result;
     }
 
+    
 
-    /*****
-    Обратный таймер с помидоркой
-    *****/
+    /**
+    * Обратный таймер с помидоркой    
+    */
    const tick = () => {
         if (isTimerOn) {
 
-            if (timer === 0) {
+            // Когда таймер подходит к концу                
+            if (timer === 0) { 
                 if (isWorkingTime) {
                     setTime(chillInterval);
                     setPoms(currentPoms => currentPoms + 1);
+                    sendNotification('Перерыв', {
+                        body: 'Сегодня вы отработали ' + (currentPoms+1) +' интервалов!',                        
+                        dir: 'auto'
+                    });  
                 }
                 else {
                     setTime(workInterval);
+                    sendNotification('Работа', {
+                        body: 'Время очередного интервала',                        
+                        dir: 'auto'
+                    }); 
                 }
                 turnWork(isWorkingTime = !isWorkingTime);
             }
+
+            // Убавляем обычный таймер, прибавляем общее время работы
             setTime(timer => timer - 1);
                 if (isWorkingTime) {
                     countWorkedTime(timeWorked => timeWorked + 1);
-                }
-                
+                }  
         }
    };
    
-
-    React.useEffect(() => {
-    const timerID = workerTimers.setTimeout(() => tick(), 1000);
-    ;
-    return () => workerTimers.clearTimeout(timerID);
-   }, [isTimerOn, timer]);
-/** 
-    React.useEffect(() => {
-        let interval = null;
-        if (isTimerOn) {
-
-            if (timer === 0) {
-                if (isWorkingTime) {
-                    setTime(chillInterval);
-                    setPoms(currentPoms => currentPoms + 1);
-                }
-                else {
-                    setTime(workInterval);
-                }
-                turnWork(isWorkingTime = !isWorkingTime);
-            }
-            interval = setTimeout(() => {
-                setTime(timer => timer - 1);
-                if (isWorkingTime) {
-                    countWorkedTime(timeWorked => timeWorked + 1);
-                }
-            }, 1000);
-
-        } else if (!isTimerOn && timer !== 0) {
-            clearTimeout(interval);
-        }
-        return () => clearTimeout(interval);
-    }, [isTimerOn, timer]);
+   /**
+    * Смена фавиконки для 4 случаев
     */
+   const changeFavicon = () => {
+    if (isWorkingTime) {
+        if (isTimerOn) {
+            favicon.href = "../img/work_play_favicon.png"; 
+        }
+        else {
+            favicon.href = "../img/work_stop_favicon.png"; 
+        }
+    }
+    else {
+        if (isTimerOn) {
+            favicon.href = "../img/chill_play_favicon.png"; 
+        }
+        else {
+            favicon.href = "../img/chill_stop_favicon.png"; 
+        }
+    }
+    
+   }
+   
+    React.useEffect(() => {
+        // Осущесвтляем ежесекундынй тик
+        const timerID = workerTimers.setTimeout(() => tick(), 1000);
+        
+        // Динамически обновляем title страницы в соответствии с таймером
+        let whatTimeItIs = isWorkingTime ? 'Работа' : 'Перерыв';
+        document.title = showTimer(timer, ['min', 'sec']) + ' • ' + whatTimeItIs + ' — TaskManager';
+
+        // Обновляем favicon
+        changeFavicon();
+        return () => workerTimers.clearTimeout(timerID);
+   }, [isTimerOn, timer]);
+
+
+   /**
+    * 
+    */
+   function spaceHandler(event) {                
+        // При нажатии пробела должен пойти таймер
+        if (event.code == 'Space') {
+            toggleCounting();
+        }    
+    }
+    // Отслеживаем нажатие кнопок
+    React.useEffect(() => {            
+        document.addEventListener("keypress", spaceHandler);
+
+        return () => document.removeEventListener("keypress",spaceHandler);
+   }, []);
+
     
     return (
         <div className='timer__wrap'>
-            <div className='timer__counter'><span>{showTimer(timer, ['min', 'sec'])}</span></div>
+            <div className='timer__counter'>
+                <span>{showTimer(timer, ['min', 'sec'])}</span>
+                <IconButton onClick={toggleCounting} color="primary" variant="contained">                
+                {isTimerOn ? <PauseCircleFilledIcon sx={{ fontSize: 50 }}/>   : <PlayCircleFilledIcon sx={{ fontSize: 50 }}/>  }
+                </IconButton>
+            </div>
+            <div className="skip__button" onClick={skipTimer}><span>Пропустить {isWorkingTime ? 'интервал' : 'перерыв'}</span></div>
             <h3>{currentPoms} из {pomLen} интервалов </h3>
             <h4>Всего отработано за сегодня: {showTimer(timeWorked, ['hour', 'min', 'sec'])}</h4>
-            <h3>{isWorkingTime ? 'Работа' : 'Перерыв'}</h3>
+            <h3>{isWorkingTime ? 'Работа' : 'Перерыв'}</h3>            
 
-            <Button onClick={toggleCounting} variant="contained">{isTimerOn ? 'Стоп' : 'Старт'}</Button>
-            <IconButton onClick={toggleCounting} color="primary" variant="contained">                
-
-                <PlayArrowIcon />   
-
-            </IconButton></div>
+        </div>
     );
 }
 
