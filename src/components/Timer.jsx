@@ -34,9 +34,12 @@ const Timer = () => {
     * Пропуск текущего интервала таймера
     */
     function skipTimer() {
-
-        setTime(0);            
-        turnTimer(true);
+        // Плюсуем остаток интервала в рабочее время
+        if (isWorkingTime) {
+            countWorkedTime(timeWorked => timeWorked + timer);
+        }
+        setTime(0);                 
+        turnTimer(true);        
     }
   
 
@@ -107,25 +110,25 @@ const Timer = () => {
    const changeFavicon = () => {
     if (isWorkingTime) {
         if (isTimerOn) {
-            favicon.href = "../img/work_play_favicon.png"; 
+            favicon.href = "../img/work_stop_favicon.png"; 
         }
         else {
-            favicon.href = "../img/work_stop_favicon.png"; 
+            favicon.href = "../img/work_play_favicon.png"; 
         }
     }
     else {
         if (isTimerOn) {
-            favicon.href = "../img/chill_play_favicon.png"; 
+            favicon.href = "../img/chill_stop_favicon.png"; 
         }
         else {
-            favicon.href = "../img/chill_stop_favicon.png"; 
+            favicon.href = "../img/chill_play_favicon.png"; 
         }
     }
     
    }
    
     React.useEffect(() => {
-        // Осущесвтляем ежесекундынй тик
+        // Осуществляем ежесекундынй тик на Воркерах, чтобы работало со свернутой вкладкой
         const timerID = workerTimers.setTimeout(() => tick(), 1000);
         
         // Динамически обновляем title страницы в соответствии с таймером
@@ -157,16 +160,18 @@ const Timer = () => {
     
     return (
         <div className='timer__wrap'>
+            <p className="interval__reminder">{isWorkingTime ? 'Работа' : 'Перерыв'}</p>
             <div className='timer__counter'>
                 <span>{showTimer(timer, ['min', 'sec'])}</span>
                 <IconButton onClick={toggleCounting} color="primary" variant="contained">                
                 {isTimerOn ? <PauseCircleFilledIcon sx={{ fontSize: 50 }}/>   : <PlayCircleFilledIcon sx={{ fontSize: 50 }}/>  }
-                </IconButton>
-            </div>
-            <div className="skip__button" onClick={skipTimer}><span>Пропустить {isWorkingTime ? 'интервал' : 'перерыв'}</span></div>
+                </IconButton>                
+            </div>                        
             <h3>{currentPoms} из {pomLen} интервалов </h3>
-            <h4>Всего отработано за сегодня: {showTimer(timeWorked, ['hour', 'min', 'sec'])}</h4>
-            <h3>{isWorkingTime ? 'Работа' : 'Перерыв'}</h3>            
+            
+            <div className="skip__button" onClick={skipTimer}><span>Пропустить {isWorkingTime ? 'интервал' : 'перерыв'}</span></div>
+
+            <h4>Всего {showTimer(timeWorked, ['hour', 'min', 'sec'])} за сегодня</h4>
 
         </div>
     );

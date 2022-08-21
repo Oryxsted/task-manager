@@ -1,3 +1,8 @@
+/**
+ * ОТправляет браузерное уведомление
+ * @param {*} title Заголовок уведомления
+ * @param {*} options Параметры уведомления
+ */
 export function sendNotification(title, options) {
     // Проверим, поддерживает ли браузер HTML5 Notifications
     if (!("Notification" in window)) {
@@ -23,6 +28,5 @@ export function sendNotification(title, options) {
     });
     } else {
     // Пользователь ранее отклонил наш запрос на показ уведомлений
-    // В этом месте мы можем, но не будем его беспокоить. Уважайте решения своих пользователей.
     }
     }

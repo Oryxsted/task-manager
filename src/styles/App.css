@@ -5,6 +5,10 @@
 }
 body {
     font-family: 'Century Gothic';
+    min-height: 100vh;
+}
+.App {
+    min-height: 100vh;
 }
 .sidebar {
     padding: 55px;
@@ -15,8 +19,20 @@ body {
 }
 .timer__counter {
     font-size:56px;
+    margin-left:-12px;
 }
 .skip__button span {
     cursor: pointer;
     border-bottom: 1px dotted;
+}
+.interval__reminder {
+    color:#ccc;
+    margin: 0 0px -6px -5px;
+}
+.css-mhc70k-MuiGrid-root>.MuiGrid-item {
+    padding-top: 0;
+}
+.top__calendar {
+    padding: 6px 12px;
+    color:#fff;
 }
