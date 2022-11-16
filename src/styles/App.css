@@ -10,16 +10,24 @@ body {
 .App {
     min-height: 100vh;
 }
-.sidebar {
-    padding: 55px;
-    background: #F6FFF7;
+.left__bar {
+    background: #f9fbff;
+    padding: 60px !important;
 }
 .top__bar {
-    background: #699A6E;
+    background: #3a51cf;/* #e15048;/* #699A6E;*/
+    padding: 8px 0;
+    box-shadow: 0px 0px 6px rgba(0,0,0,.2);
+}
+.timer__wrap {
+    margin-bottom:32px;
 }
 .timer__counter {
     font-size:56px;
-    margin-left:-12px;
+    margin-left:-8px;
+}
+.timer__counter button {
+    margin-top:-12px
 }
 .skip__button span {
     cursor: pointer;
@@ -33,6 +41,44 @@ body {
     padding-top: 0;
 }
 .top__calendar {
-    padding: 6px 12px;
+    padding-left:55px;
     color:#fff;
+}
+.leftnav__item {
+    list-style: none;
+    cursor: pointer;
+    padding:6px;
+    transition: .2s ease all;
+    border-radius: 6px;
+    margin-bottom: 4px;
+}
+.leftnav__item:hover, .leftnav__item.current {
+    background: #f1f3ff;
+}
+.main__content {
+    padding:80px;
+}
+.nav__header {
+    display: flex;
+    justify-content: space-between;    
+    border-bottom: 1px solid #ededed;
+    padding-bottom: 2px;
+}
+.nav__body {
+    transition: .2s ease all;
+    transform-origin: top;
+}
+.nav__body {
+    transform: scaleY(0);
+} 
+.nav__body.opened {
+    transform: scaleY(1);
+    margin-top: 12px;
+}
+.control__icon {
+    transition: .3s ease all;
+    transform: rotate(0deg);
+}
+.control__icon.rotated {
+    transform: rotate(90deg) !important;
 }
