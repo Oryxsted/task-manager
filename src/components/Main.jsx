@@ -5,6 +5,7 @@ import  '../styles/App.css';
 import MainContent from './mainContent/MainContent';
 import LeftBar from './leftBar/LeftBar';
 import TopBar from './topBar/TopBar';
+import Popup from "./popup/Popup";
 
 /**
  * 
@@ -33,7 +34,9 @@ import TopBar from './topBar/TopBar';
         <MainContent/>
 
       </Grid>
-    </Grid>
+      
+      <Popup></Popup>
+    </Grid>    
     );
  }
  export default Main;
