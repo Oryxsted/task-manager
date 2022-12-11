@@ -1,11 +1,36 @@
+@font-face {
+	font-family: "EuclidCircularB";
+	font-style: normal;
+	font-weight: 100;
+	font-display: swap;
+	src: local("EuclidCircularB"),
+		local("EuclidCircularB-Light"),
+		url('../fonts/EuclidCircularB-Light.woff2') format("woff2"),
+		url('../fonts/EuclidCircularB-Light.woff') format("woff")
+}
+@font-face {
+	font-family: "EuclidCircularB";
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: local("EuclidCircularB"),
+		local("EuclidCircularB-SemiBold"),
+		url('../fonts/EuclidCircularB-SemiBold.woff2') format("woff2"),
+		url('../fonts/EuclidCircularB-SemiBold.woff') format("woff")
+}
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 body {
-    font-family: 'Century Gothic';
+    font-family: 'EuclidCircularB';
     min-height: 100vh;
+}
+button {
+    border:none;
+    background: transparent;
+    cursor: pointer;
 }
 .App {
     min-height: 100vh;
@@ -15,7 +40,7 @@ body {
     padding: 60px !important;
 }
 .top__bar {
-    background: #3a51cf;/* #e15048;/* #699A6E;*/
+    background: #0c78ee;/* #e15048;/* #699A6E;*/
     padding: 8px 0;
     box-shadow: 0px 0px 6px rgba(0,0,0,.2);
 }
@@ -23,8 +48,7 @@ body {
     margin-bottom:32px;
 }
 .timer__counter {
-    font-size:56px;
-    margin-left:-8px;
+    font-size:56px;    
 }
 .timer__counter button {
     margin-top:-12px
@@ -37,8 +61,20 @@ skip__button {
     border-bottom: 1px solid #eee;
 }
 .interval__reminder {
-    color:#ccc;
-    margin: 0 0px -6px -5px;
+    color:#808080;    
+}
+.interval__reminder span {
+    width: 12px;
+    height: 12px;    
+    background: #808080;
+    display: inline-block;
+    border-radius: 50%;
+}
+.interval__reminder span.work {
+    background: rgb(255, 85, 84);
+}
+.interval__reminder span.chill {
+    background: rgb(94, 189, 70);
 }
 .css-mhc70k-MuiGrid-root>.MuiGrid-item {
     padding-top: 0;
@@ -100,5 +136,58 @@ skip__button {
     background-color: #fff;
     min-width: 300px;
     border-radius: 12px;
-    padding:12px;
+    padding: 18px;
+    position: relative;
+}
+.popup__header h2 {
+    margin-bottom: 18px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #eee;
+}
+.closeModal {
+    position: absolute;
+    right: 10px;
+    top: 1px;
+    cursor: pointer;
+}
+.addTab__form label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+.addTab__form span {
+    margin-bottom: 3px;
+}
+.addTab__form input {
+    border: 1px solid #808080;
+    border-radius: 6px;
+    padding: 6px;
+}
+.addTab__form .buttons__row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+.addTab__form .buttons__row button.outline {
+    margin-right: 6px;
+}
+button {
+    font-size: 15px;
+    font-family: 'EuclidCircularB';
+    border-radius: 6px;
+}
+button.primary {
+    background-color: #0c78ee;
+    color: #fff;
+    padding: 6px 12px;
+}
+button.outline {
+    border: 1px solid #0c78ee;
+    padding: 6px 12px;
+}
+.add__task {
+    background: transparent;
+    margin-top: 12px;
+    color:#808080;
+    border-radius: 6px;
 }

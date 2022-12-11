@@ -183,7 +183,7 @@ const Timer = ({options}) => {
     */
    function spaceHandler(event) {                
         // При нажатии пробела должен пойти таймер
-        if (event.code == 'Space') {
+        if (event.code === 'Space') {
             toggleCounting();
         }    
     }
@@ -197,8 +197,8 @@ const Timer = ({options}) => {
     
     return (
         <div className='timer__wrap'>
-            <p className="interval__reminder">{isWorkingTime ? 'Работа' : 'Перерыв'}</p>
-            <div className='timer__counter'>
+            <p className="interval__reminder"><span className={isWorkingTime ? 'work' : 'chill'}></span> {isWorkingTime ? 'Работа' : 'Перерыв'}</p>
+            <div className='timer__counter'>                
                 <span>{showTimer(timer, ['min', 'sec'])}</span>
                 <IconButton onClick={toggleCounting} color="primary" variant="contained">                
                 {isTimerOn ? <PauseCircleFilledIcon sx={{ fontSize: 60 }}/>   : <PlayCircleFilledIcon sx={{ fontSize: 60 }}/>  }

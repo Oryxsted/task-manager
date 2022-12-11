@@ -2,7 +2,16 @@ const defaultState = {
    list: [
     {
         name: "Работа",
-        content: "333",
+        content: {
+            description: "Задачи по работе",
+            todos: [
+                {
+                    title: "Тестовая задача",
+                    description: "Пример описания",
+                    isComplete:false,
+                },
+            ]
+        },
         isActive: true,
     },
     {
@@ -19,9 +28,7 @@ export const tabsReducer = (state = defaultState, action) => {
         case "ADD_NEW_TAB":          
             return {...state, list: [...state.list, action.payload]}           
         case "DELETE_TAB":
-            return {...state, isOpened : false }
-        case "CHANGE_ACTIVE_TAB":
-            return {...state, content : action.payload}
+            return {...state, isOpened : false }       
         case "EDIT_TABS":
             return {...state, list : action.payload}            
         default:

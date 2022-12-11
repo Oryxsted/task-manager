@@ -22,7 +22,16 @@ import { useDispatch, useSelector } from "react-redux";
         disp({type:"SET_POPUP_CONTENT", payload: "addNewTab"});
     }    
     
-    const tabs = useSelector(state => state.tabs.list);
+    const tabsList = useSelector(state => state.tabs.list);
+    
+    const selectTab = (tabName) => {        
+        let changedTabs =  tabsList.map( (item) => {
+            item.isActive = (item.name === tabName) ? true : false;
+            return item;
+        });        
+        
+        disp({type:"EDIT_TABS", payload: changedTabs});
+    }
 
 
     return (
@@ -50,10 +59,10 @@ import { useDispatch, useSelector } from "react-redux";
             </div>
             <div className={"nav__body " + (isListOpened ? 'opened' : '')}>
                 <ul>                    
-                    {tabs.map((item, index) => {
+                    {tabsList.map((item, index) => {
                         let additionalClass = (index === currentItem) ? " current" : "";
                         return (
-                            <li className={"leftnav__item" + additionalClass} onClick={ () => { setCurrent(index)} }>{item.name}</li>
+                            <li className={"leftnav__item" + additionalClass} onClick={ () => { setCurrent(index);selectTab(item.name)} }>{item.name}</li>
                             
                         );
                     })}
